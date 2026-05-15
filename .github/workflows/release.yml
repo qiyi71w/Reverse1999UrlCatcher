@@ -16,6 +16,9 @@ jobs:
   publish:
     runs-on: windows-latest
     timeout-minutes: 30
+    env:
+      PLATFORM_TOOLS_URL: https://dl.google.com/android/repository/platform-tools-latest-windows.zip
+      MITMPROXY_VERSION: 11.0.2
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,6 +27,59 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "10.0.x"
+
+      - name: Prepare bundled tools (adb + mitmdump)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          $toolsRoot = Join-Path $PWD "tools"
+          if (Test-Path -LiteralPath $toolsRoot) {
+            Remove-Item -LiteralPath $toolsRoot -Recurse -Force
+          }
+          New-Item -ItemType Directory -Force -Path $toolsRoot | Out-Null
+
+          # 1) Android platform-tools (adb)
+          $platformZip = Join-Path $PWD "platform-tools.zip"
+          Invoke-WebRequest -Uri "${env:PLATFORM_TOOLS_URL}" -OutFile $platformZip
+          Expand-Archive -Path $platformZip -DestinationPath $toolsRoot -Force
+          Remove-Item -LiteralPath $platformZip -Force
+
+          $adbPath = Join-Path $toolsRoot "platform-tools\adb.exe"
+          if (-not (Test-Path -LiteralPath $adbPath)) {
+            throw "Failed to prepare adb.exe at $adbPath"
+          }
+
+          # 2) mitmproxy standalone bundle (mitmdump) - pinned version
+          $mitmVersion = "${env:MITMPROXY_VERSION}"
+          if ([string]::IsNullOrWhiteSpace($mitmVersion)) {
+            throw "MITMPROXY_VERSION is empty."
+          }
+          $mitmUrl = "https://downloads.mitmproxy.org/$mitmVersion/mitmproxy-$mitmVersion-windows-x86_64.zip"
+          $mitmZip = Join-Path $PWD "mitmproxy.zip"
+          Invoke-WebRequest -Uri $mitmUrl -OutFile $mitmZip
+
+          $mitmExtractRoot = Join-Path $PWD "mitmproxy-extract"
+          if (Test-Path -LiteralPath $mitmExtractRoot) {
+            Remove-Item -LiteralPath $mitmExtractRoot -Recurse -Force
+          }
+          Expand-Archive -Path $mitmZip -DestinationPath $mitmExtractRoot -Force
+          Remove-Item -LiteralPath $mitmZip -Force
+
+          $mitmdump = Get-ChildItem -LiteralPath $mitmExtractRoot -Recurse -File -Filter "mitmdump.exe" | Select-Object -First 1
+          if (-not $mitmdump) {
+            throw "mitmdump.exe not found in downloaded mitmproxy bundle."
+          }
+
+          $mitmTarget = Join-Path $toolsRoot "mitmproxy"
+          New-Item -ItemType Directory -Force -Path $mitmTarget | Out-Null
+          Copy-Item -LiteralPath $mitmdump.Directory.FullName -Destination $mitmTarget -Recurse -Force
+          Remove-Item -LiteralPath $mitmExtractRoot -Recurse -Force
+
+          $mitmdumpPath = Get-ChildItem -LiteralPath $mitmTarget -Recurse -File -Filter "mitmdump.exe" | Select-Object -First 1
+          if (-not $mitmdumpPath) {
+            throw "Failed to prepare mitmdump.exe under $mitmTarget"
+          }
 
       - name: Build release package
         shell: pwsh
