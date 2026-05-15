@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Reverse1999UrlCatcher.Core\Reverse1999UrlCatcher.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\config\url_rules.json" Link="config\url_rules.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\scripts\re1999_capture.py" Link="scripts\re1999_capture.py" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\scripts\https_probe.py" Link="scripts\https_probe.py" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

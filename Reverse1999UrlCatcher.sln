@@ -1,0 +1,36 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reverse1999UrlCatcher.Core", "src\Reverse1999UrlCatcher.Core\Reverse1999UrlCatcher.Core.csproj", "{60C82D9A-4E2B-4E28-9F39-F2E2C219B001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reverse1999UrlCatcher.Cli", "src\Reverse1999UrlCatcher.Cli\Reverse1999UrlCatcher.Cli.csproj", "{60C82D9A-4E2B-4E28-9F39-F2E2C219B002}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reverse1999UrlCatcher.App", "src\Reverse1999UrlCatcher.App\Reverse1999UrlCatcher.App.csproj", "{60C82D9A-4E2B-4E28-9F39-F2E2C219B003}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reverse1999UrlCatcher.Tests", "tests\Reverse1999UrlCatcher.Tests\Reverse1999UrlCatcher.Tests.csproj", "{60C82D9A-4E2B-4E28-9F39-F2E2C219B004}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C82D9A-4E2B-4E28-9F39-F2E2C219B004}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

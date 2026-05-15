@@ -1,0 +1,26 @@
+{
+  "rules": [
+    {
+      "name": "global-default",
+      "environment": "official-global",
+      "hosts": [
+        "game-re-en-service.sl916.com",
+        "game-re-service.sl916.com"
+      ],
+      "pathContains": [
+        "/query/summon"
+      ],
+      "method": "GET",
+      "requireHttps": true,
+      "requireStatusCode": 200,
+      "queryKeys": [],
+      "validateResponseJson": false,
+      "responseCodeAllow": [
+        200
+      ],
+      "responseMsgAllow": [
+        "成功"
+      ]
+    }
+  ]
+}

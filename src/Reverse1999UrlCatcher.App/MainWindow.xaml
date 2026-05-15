@@ -1,0 +1,652 @@
+<Window x:Class="Reverse1999UrlCatcher.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Reverse1999UrlCatcher"
+        Height="840"
+        Width="1280"
+        MinHeight="760"
+        MinWidth="1120"
+        ResizeMode="CanResize"
+        FontFamily="Microsoft YaHei UI"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="ClearType"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <SolidColorBrush x:Key="WindowBrush" Color="#F3F6FC" />
+        <SolidColorBrush x:Key="TopBarBrush" Color="#F8FAFF" />
+        <SolidColorBrush x:Key="PanelBrush" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="PanelBorderBrush" Color="#D8DFEB" />
+        <SolidColorBrush x:Key="InputBrush" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="InputBorderBrush" Color="#C8D3E2" />
+        <SolidColorBrush x:Key="PrimaryTextBrush" Color="#161B22" />
+        <SolidColorBrush x:Key="SecondaryTextBrush" Color="#4A5C72" />
+        <SolidColorBrush x:Key="DisabledTextBrush" Color="#8A98AD" />
+        <SolidColorBrush x:Key="ButtonBrush" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="ButtonHoverBrush" Color="#F2F6FF" />
+        <SolidColorBrush x:Key="ButtonDisabledBrush" Color="#EEF2F8" />
+        <SolidColorBrush x:Key="ButtonBorderBrush" Color="#B6C2D3" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#1565D8" />
+        <SolidColorBrush x:Key="AccentHoverBrush" Color="#0F55BA" />
+        <SolidColorBrush x:Key="SuccessBrush" Color="#1FA44A" />
+        <SolidColorBrush x:Key="StatusBadgeBrush" Color="#F5F7FB" />
+        <SolidColorBrush x:Key="LogBackgroundBrush" Color="#F9FBFF" />
+        <SolidColorBrush x:Key="LogBorderBrush" Color="#D7E0ED" />
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#2D7DF1" />
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#2D7DF1" />
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#FFFFFF" />
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+
+        <Style x:Key="SectionCaptionStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource InputBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="MinHeight" Value="36" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource InputBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="8,5" />
+            <Setter Property="MinHeight" Value="36" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="IsEditable" Value="False" />
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                        <Setter Property="Background" Value="{DynamicResource PanelBrush}" />
+                        <Setter Property="Padding" Value="8,4" />
+                        <Style.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource ButtonHoverBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{DynamicResource DisabledTextBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DeviceDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource PanelBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PanelBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource InputBrush}" />
+            <Setter Property="RowBackground" Value="{DynamicResource PanelBrush}" />
+            <Setter Property="GridLinesVisibility" Value="Horizontal" />
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource PanelBorderBrush}" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="CanUserDeleteRows" Value="False" />
+            <Setter Property="CanUserResizeRows" Value="False" />
+            <Setter Property="SelectionMode" Value="Single" />
+            <Setter Property="SelectionUnit" Value="FullRow" />
+            <Setter Property="RowHeight" Value="38" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="ColumnHeaderHeight" Value="36" />
+            <Setter Property="ColumnHeaderStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="{DynamicResource LogBackgroundBrush}" />
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource PanelBorderBrush}" />
+                        <Setter Property="BorderThickness" Value="0,0,0,1" />
+                        <Setter Property="Padding" Value="10,8" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RowStyle">
+                <Setter.Value>
+                        <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="{DynamicResource PanelBrush}" />
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ButtonBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="14,7" />
+            <Setter Property="MinHeight" Value="36" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource ButtonHoverBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource AccentHoverBrush}" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{DynamicResource AccentHoverBrush}" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource ButtonDisabledBrush}" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource DisabledTextBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryActionButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+            <Setter Property="Foreground" Value="White" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource AccentHoverBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource AccentHoverBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ThemeToggleStyle" TargetType="CheckBox">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Grid Width="50" Height="28">
+                            <Border x:Name="SwitchTrack"
+                                    CornerRadius="15"
+                                    Background="#C7CDD9"
+                                    BorderBrush="#AEB7C6"
+                                    BorderThickness="1" />
+                            <Ellipse x:Name="SwitchThumb"
+                                     Width="22"
+                                     Height="22"
+                                     Fill="White"
+                                     Margin="3,0,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="SwitchTrack" Property="Background" Value="{DynamicResource AccentBrush}" />
+                                <Setter TargetName="SwitchTrack" Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                                <Setter TargetName="SwitchThumb" Property="HorizontalAlignment" Value="Right" />
+                                <Setter TargetName="SwitchThumb" Property="Margin" Value="0,0,3,0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="0,0,0,10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Border Background="{DynamicResource PanelBrush}"
+                                BorderBrush="{DynamicResource PanelBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Padding="14,12,14,14">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Text="{TemplateBinding Header}"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                                <ContentPresenter Grid.Row="2" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LogListStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="{DynamicResource LogBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource LogBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="FontFamily" Value="Microsoft YaHei UI" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalOnly" />
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"
+                                   TextWrapping="WrapWithOverflow"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="HostIpListStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="{DynamicResource InputBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="MinHeight" Value="64" />
+            <Setter Property="MaxHeight" Value="96" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Padding" Value="8,4" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource ButtonHoverBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource ButtonHoverBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Address}"
+                                   Foreground="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=Foreground}"
+                                   FontWeight="SemiBold" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SlimVerticalScrollBarStyle" TargetType="ScrollBar">
+            <Setter Property="Width" Value="4" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid>
+                            <Track x:Name="PART_Track"
+                                   IsDirectionReversed="True">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand"
+                                                  Opacity="0"
+                                                  Focusable="False" />
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border x:Name="ThumbBorder"
+                                                        CornerRadius="2"
+                                                        Background="#6B7A90"
+                                                        Opacity="0.45" />
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="ThumbBorder" Property="Opacity" Value="0.8" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand"
+                                                  Opacity="0"
+                                                  Focusable="False" />
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LeftPaneScrollViewerStyle" TargetType="ScrollViewer">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="4" />
+                            </Grid.ColumnDefinitions>
+                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                    Grid.Column="0"
+                                                    CanContentScroll="{TemplateBinding CanContentScroll}" />
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                       Grid.Column="1"
+                                       Orientation="Vertical"
+                                       Minimum="0"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Value="{Binding VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       Style="{StaticResource SlimVerticalScrollBarStyle}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Background="{DynamicResource WindowBrush}">
+        <Border DockPanel.Dock="Top"
+                Margin="14,12,14,0"
+                Padding="14,10"
+                Background="{DynamicResource TopBarBrush}"
+                BorderBrush="{DynamicResource PanelBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="12">
+            <Grid VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="Reverse1999UrlCatcher"
+                           FontSize="22"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center" />
+                <TextBlock Grid.Column="0"
+                           Margin="320,4,0,0"
+                           Text="仅供学习交流使用"
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           VerticalAlignment="Center" />
+
+                <Border Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource StatusBadgeBrush}"
+                        BorderBrush="{DynamicResource PanelBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="9"
+                        Padding="10,5"
+                        Visibility="{Binding ShowStatusBadge, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="10" Height="10" Fill="{DynamicResource SuccessBrush}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <TextBlock Text="{Binding Status}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}" />
+                    </StackPanel>
+                </Border>
+
+                <CheckBox Grid.Column="2"
+                          Style="{StaticResource ThemeToggleStyle}"
+                          IsChecked="{Binding IsDarkTheme}"
+                          VerticalAlignment="Center"
+                          Margin="0,0,10,0" />
+                <TextBlock Grid.Column="3"
+                           Text="深色模式"
+                           FontSize="14"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           VerticalAlignment="Center"
+                           Margin="0,0,18,0" />
+                <TextBlock Grid.Column="4" FontSize="14" VerticalAlignment="Center">
+                    <Hyperlink NavigateUri="https://github.com/qiyi71w/Reverse1999UrlCatcher"
+                               RequestNavigate="GitHubLink_RequestNavigate">
+                        GitHub 仓库主页
+                    </Hyperlink>
+                </TextBlock>
+            </Grid>
+        </Border>
+
+        <Grid Margin="14,10,14,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="390" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Style="{StaticResource LeftPaneScrollViewerStyle}">
+                <ScrollViewer.Resources>
+                    <Style TargetType="ScrollBar" BasedOn="{StaticResource SlimVerticalScrollBarStyle}" />
+                </ScrollViewer.Resources>
+                <StackPanel>
+                    <GroupBox Header="环境">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource SectionCaptionStyle}" Text="adb 路径" Margin="0,0,0,4" />
+                            <DockPanel Margin="0,0,0,10">
+                                <TextBox Text="{Binding AdbPath, UpdateSourceTrigger=PropertyChanged}" />
+                            </DockPanel>
+                            <TextBlock Style="{StaticResource SectionCaptionStyle}" Text="mitmdump 路径" Margin="0,0,0,4" />
+                            <DockPanel Margin="0,0,0,10">
+                                <TextBox Text="{Binding MitmdumpPath, UpdateSourceTrigger=PropertyChanged}" />
+                            </DockPanel>
+                            <Button Content="检测环境"
+                                    Command="{Binding ProbeEnvironmentCommand}"
+                                    Style="{StaticResource PrimaryActionButtonStyle}"
+                                    Width="150"
+                                    HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="主机 IP">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource SectionCaptionStyle}" Text="主机 IPv4" Margin="0,0,0,6" />
+                            <ListBox ItemsSource="{Binding HostIps}"
+                                     SelectedItem="{Binding SelectedHostIp}"
+                                     Style="{StaticResource HostIpListStyle}" />
+                            <TextBlock Text="不要使用 127.0.0.1 作为 MuMu 代理"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       FontSize="13"
+                                       Margin="0,10,0,0" />
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="证书">
+                        <StackPanel>
+                            <Button Content="生成 CA 证书" Command="{Binding GenerateCertificateCommand}" Margin="0,0,0,8" />
+                            <Button Content="推送证书到 MuMu" Command="{Binding PushCertificateCommand}" Margin="0,0,0,8" />
+                            <Button Content="半自动安装 CA（生成+推送+打开安装页）"
+                                    Command="{Binding SemiAutoInstallCaCommand}"
+                                    Margin="0,0,0,8" />
+                            <Button Content="打开证书目录" Command="{Binding OpenCertificateDirectoryCommand}" Margin="0,0,0,8" />
+                            <Button Content="我已安装，检测解密" Command="{Binding ConfirmCertificateInstalledCommand}" />
+                            <TextBlock Margin="0,10,0,0"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap"
+                                       Text="设置-网络和互联网-互联网-网络偏好设置-安装证书" />
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <GroupBox Grid.Row="0" Header="MuMu 设备">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <DockPanel Grid.Row="0" LastChildFill="False">
+                            <TextBlock Text="手动 ADB 端口"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,10,0" />
+                            <TextBox Width="150"
+                                     Text="{Binding ManualPort, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Content="连接 ADB 端口"
+                                    Command="{Binding ConnectManualCommand}"
+                                    Width="140"
+                                    Margin="10,0,0,0" />
+                            <Button Content="自动发现 MuMu"
+                                    Command="{Binding DiscoverDevicesCommand}"
+                                    Style="{StaticResource PrimaryActionButtonStyle}"
+                                    Width="150"
+                                    Margin="10,0,0,0" />
+                        </DockPanel>
+
+                        <DataGrid Grid.Row="2"
+                                  Style="{StaticResource DeviceDataGridStyle}"
+                                  ItemsSource="{Binding Devices}"
+                                  SelectedItem="{Binding SelectedDevice}"
+                                  MinHeight="130"
+                                  MaxHeight="180">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="序列号" Binding="{Binding Serial}" Width="2*" IsReadOnly="True" />
+                                <DataGridTextColumn Header="型号" Binding="{Binding Model}" Width="1.5*" IsReadOnly="True" />
+                                <DataGridTextColumn Header="品牌" Binding="{Binding Brand}" Width="1*" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Android 版本" Binding="{Binding AndroidVersion}" Width="1.4*" IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Row="1" Header="代理与抓取">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="8" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="130" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="142" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="152" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="170" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="代理端口"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource SecondaryTextBrush}" />
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding ProxyPort, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Grid.Column="3"
+                                    Content="启动抓取"
+                                    Command="{Binding StartCaptureCommand}"
+                                    Style="{StaticResource PrimaryActionButtonStyle}" />
+                            <Button Grid.Column="5"
+                                    Content="停止并恢复代理"
+                                    Command="{Binding StopCaptureCommand}" />
+                            <Button Grid.Column="7"
+                                    Content="修复 MuMu 无法上网"
+                                    Command="{Binding RecoverProxyCommand}" />
+                        </Grid>
+
+                        <TextBlock Grid.Row="2"
+                                   Text="{Binding ProxyApplyStatus, StringFormat=代理状态：{0}}"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   FontWeight="SemiBold"
+                                   FontSize="14" />
+                        <TextBlock Grid.Row="2"
+                                   Margin="0,0,0,0"
+                                   HorizontalAlignment="Right"
+                                   Text="{Binding TrafficStatus, StringFormat=流量状态：{0}}"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   FontWeight="SemiBold"
+                                   FontSize="14" />
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Row="2" Header="捕获结果">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="14" />
+                            <ColumnDefinition Width="150" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0"
+                                 Text="{Binding CapturePreview}"
+                                 IsReadOnly="True"
+                                 MinHeight="58"
+                                 TextWrapping="Wrap"
+                                 VerticalScrollBarVisibility="Auto" />
+                        <Button Grid.Column="2"
+                                Content="复制链接"
+                                Command="{Binding CopyUrlCommand}" />
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Row="3" Header="运行日志">
+                    <ListBox ItemsSource="{Binding Logs}"
+                             Style="{StaticResource LogListStyle}"
+                             VerticalAlignment="Stretch" />
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>
