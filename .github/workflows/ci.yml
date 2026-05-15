@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore
+        run: dotnet restore Reverse1999UrlCatcher.sln
+
+      - name: Build
+        run: dotnet build Reverse1999UrlCatcher.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test Reverse1999UrlCatcher.sln -c Release --no-build --verbosity normal
+
+      - name: Validate Python script syntax
+        run: python -m py_compile scripts/re1999_capture.py scripts/https_probe.py
