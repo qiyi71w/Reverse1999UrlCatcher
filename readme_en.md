@@ -54,11 +54,10 @@ Repository layout:
 2. Fill or confirm `adb` and `mitmdump` paths.
 3. Click **Detect Environment**.
 4. Click **Auto Discover Emulator** or connect by ADB port.
-5. If certificate installation is needed, click **Semi-auto Install CA** in the certificate section.
-6. Complete certificate installation in the emulator:  
+5. If certificate installation is needed, click **Semi-auto Install CA** in the certificate section and complete certificate installation in the emulator:
    `Settings -> Network & internet -> Internet -> Network preferences -> Install certificates`
-7. Select host IP and click **Start Capture**.
-8. Open summon history page in game and copy captured URL.
+6. Select host IP and click **Start Capture**.
+7. Open summon history page in game and copy captured URL.
 
 ## CLI Commands
 

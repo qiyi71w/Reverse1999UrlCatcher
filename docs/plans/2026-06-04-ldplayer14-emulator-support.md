@@ -116,4 +116,4 @@ MuMu 设备 -> 模拟器设备
 rg -n "discover-mumu|MuMu" src README.md readme_en.md
 ```
 
-Expected: no `discover-mumu`; `MuMu` may remain in README files only as a known supported emulator example.
+Expected: no `discover-mumu`; `MuMu` may remain in README files as a known supported emulator example and in `ToolLocator` static adb candidate paths required by the approved spec.

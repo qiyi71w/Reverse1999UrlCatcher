@@ -15,7 +15,7 @@ Windows 桌面工具：辅助抓取《重返未来：1999》抽卡历史 URL（A
 
 ## 项目简介
 
-Reverse1999UrlCatcher 用于在 **Windows + ADB-based Android 模拟器** 场景下，协助完成：
+Reverse1999UrlCatcher 用于在 **Windows + 基于 ADB 的 Android 模拟器** 场景下，协助完成：
 
 - 检测 `adb` / `mitmdump` 环境
 - 自动发现并连接模拟器 ADB 设备
@@ -42,7 +42,7 @@ Reverse1999UrlCatcher 用于在 **Windows + ADB-based Android 模拟器** 场景
 
 - Windows 10/11 x64
 - .NET 10 SDK（源码运行时）
-- ADB-based Android 模拟器（已启动实例；已知支持示例：MuMu、LDPlayer 14）
+- 基于 ADB 的 Android 模拟器（已启动实例；已知支持示例：MuMu、LDPlayer 14）
 - `adb.exe`（可在软件中手填路径）
 - `mitmdump.exe`（可在软件中手填路径）
 
