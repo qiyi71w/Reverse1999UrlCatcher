@@ -4,6 +4,8 @@ namespace Reverse1999UrlCatcher.Core.Services;
 
 public sealed class ToolLocator
 {
+    private static readonly string LocalAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
     private static readonly string[] EmulatorAdbCandidates =
     [
         @"C:\Program Files (x86)\Nemu\vmonitor\bin\adb_server.exe",
@@ -11,14 +13,14 @@ public sealed class ToolLocator
         @"C:\Program Files\Netease\MuMu Player 12\shell\adb.exe",
         @"D:\leidian\LDPlayer14\adb.exe",
         @"C:\leidian\LDPlayer14\adb.exe",
-        @"C:\Users\admin\AppData\Local\Microsoft\WinGet\Packages\Google.PlatformTools_Microsoft.Winget.Source_8wekyb3d8bbwe\platform-tools\adb.exe",
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk", "platform-tools", "adb.exe"),
+        Path.Combine(LocalAppData, "Microsoft", "WinGet", "Packages", "Google.PlatformTools_Microsoft.Winget.Source_8wekyb3d8bbwe", "platform-tools", "adb.exe"),
+        Path.Combine(LocalAppData, "Android", "Sdk", "platform-tools", "adb.exe"),
     ];
 
     private static readonly string[] MitmproxyCandidates =
     [
         @"C:\Program Files\mitmproxy\bin\mitmdump.exe",
-        @"C:\Users\admin\AppData\Local\Programs\mitmproxy\bin\mitmdump.exe",
+        Path.Combine(LocalAppData, "Programs", "mitmproxy", "bin", "mitmdump.exe"),
     ];
 
     public ToolStatus FindAdb(string? explicitPath = null)
