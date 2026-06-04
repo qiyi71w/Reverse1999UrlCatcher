@@ -117,4 +117,5 @@ Manual validation should include:
 ## Open Constraints
 
 - User testing indicates LDPlayer 14 can be discovered by the current loopback scan and can capture without manual CA installation in a fresh install. This may depend on emulator, game, or network state and should not be documented as a guaranteed behavior.
+- Later user testing showed MuMu can bind `127.0.0.1:5555` while LDPlayer binds `0.0.0.0:5555`. Discovery should handle this same-port collision by trying a loopback alias such as `127.0.0.2:5555` when a wildcard listener is shadowed by a loopback listener.
 - LDPlayer multi-instance port discovery may be improved later through a separate design if loopback scanning produces too many false candidates.

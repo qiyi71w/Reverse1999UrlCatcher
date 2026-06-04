@@ -87,4 +87,5 @@ Output is generated in `dist/`.
 - Capture success depends on game version, network conditions, and certificate trust state.
 - Some environments may capture without installing a CA; certificate installation and checks remain available for environments that need HTTPS decryption confirmation.
 - Logs may include non-target domains (crash reporting, H5 pages, support services). This is normal background traffic.
+- When multiple emulators are running and ADB ports collide, auto discovery tries local loopback aliases to separate same-port instances. If the target instance still cannot be found, close other emulators first, then run auto discovery again or connect by ADB port manually.
 - If the emulator loses network connectivity after capture, use the **Repair Emulator Proxy** action in app.

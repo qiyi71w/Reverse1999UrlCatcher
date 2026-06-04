@@ -7,7 +7,16 @@ public sealed record ProcessResult(int ExitCode, string StandardOutput, string S
     public bool IsSuccess => ExitCode == 0;
 }
 
-public sealed class ProcessRunner
+public interface IProcessRunner
+{
+    Task<ProcessResult> RunAsync(
+        string fileName,
+        IEnumerable<string> arguments,
+        TimeSpan timeout,
+        CancellationToken cancellationToken = default);
+}
+
+public sealed class ProcessRunner : IProcessRunner
 {
     public async Task<ProcessResult> RunAsync(
         string fileName,
