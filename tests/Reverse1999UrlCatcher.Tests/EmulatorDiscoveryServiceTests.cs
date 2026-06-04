@@ -54,9 +54,9 @@ public sealed class EmulatorDiscoveryServiceTests
                 return Task.FromResult(new ProcessResult(0, $"connected to {target}", ""));
             }
 
-            if (args.Length >= 4 && args[0] == "-s" && args[2] == "shell")
+            if (args is ["-s", var serial, "shell", var command])
             {
-                return Task.FromResult(new ProcessResult(0, ShellOutput(args[1], args[3]), ""));
+                return Task.FromResult(new ProcessResult(0, ShellOutput(serial, command), ""));
             }
 
             return Task.FromResult(new ProcessResult(1, "", "unexpected adb command"));

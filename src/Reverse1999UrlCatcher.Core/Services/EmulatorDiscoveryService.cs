@@ -81,19 +81,7 @@ public sealed class EmulatorDiscoveryService
         var knownSerials = GetKnownSerials(initialDevices);
 
         var candidates = GetLoopbackCandidateTargets(knownPorts, knownSerials);
-        foreach (var candidate in candidates)
-        {
-            try
-            {
-                using var perPortCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-                perPortCts.CancelAfter(TimeSpan.FromSeconds(2));
-                await TryConnectWithRetryAsync(candidate, perPortCts.Token);
-            }
-            catch
-            {
-                // Best effort.
-            }
-        }
+        await TryConnectCandidatesBestEffortAsync(candidates, cancellationToken);
 
         return await DiscoverAsync(cancellationToken);
     }
@@ -109,6 +97,16 @@ public sealed class EmulatorDiscoveryService
             .Where(target => target.Port >= 10000 || target.IsLoopbackAlias)
             .Take(16);
 
+        await TryConnectCandidatesBestEffortAsync(candidates, cancellationToken);
+
+        var expanded = await DiscoverAsync(cancellationToken);
+        return expanded.Count >= existingDevices.Count ? expanded : existingDevices;
+    }
+
+    private async Task TryConnectCandidatesBestEffortAsync(
+        IEnumerable<AdbConnectTarget> candidates,
+        CancellationToken cancellationToken)
+    {
         foreach (var candidate in candidates)
         {
             try
@@ -119,12 +117,9 @@ public sealed class EmulatorDiscoveryService
             }
             catch
             {
-                // Best effort expansion.
+                // Candidate probing is best effort; discovery continues with any devices found.
             }
         }
-
-        var expanded = await DiscoverAsync(cancellationToken);
-        return expanded.Count >= existingDevices.Count ? expanded : existingDevices;
     }
 
     private async Task TryConnectWithRetryAsync(int port, CancellationToken cancellationToken)
@@ -183,13 +178,24 @@ public sealed class EmulatorDiscoveryService
         IReadOnlyList<IPEndPoint> listeners,
         HashSet<string> knownSerials)
     {
-        return listeners
+        var wildcardPorts = listeners
             .Where(endpoint => endpoint.Address.Equals(IPAddress.Any))
             .Select(endpoint => endpoint.Port)
-            .Where(port => listeners.Any(endpoint => endpoint.Port == port && endpoint.Address.Equals(IPAddress.Loopback)))
-            .Where(port => !listeners.Any(endpoint => endpoint.Port == port && endpoint.Address.Equals(LoopbackAlias)))
-            .Where(IsLikelyEmulatorPort)
             .Distinct()
+            .ToList();
+        var loopbackPorts = listeners
+            .Where(endpoint => endpoint.Address.Equals(IPAddress.Loopback))
+            .Select(endpoint => endpoint.Port)
+            .ToHashSet();
+        var aliasPorts = listeners
+            .Where(endpoint => endpoint.Address.Equals(LoopbackAlias))
+            .Select(endpoint => endpoint.Port)
+            .ToHashSet();
+
+        return wildcardPorts
+            .Where(loopbackPorts.Contains)
+            .Where(port => !aliasPorts.Contains(port))
+            .Where(IsLikelyEmulatorPort)
             .Where(port => !knownSerials.Contains($"{LoopbackAlias}:{port}"))
             .Select(port => new AdbConnectTarget(LoopbackAlias.ToString(), port, IsLoopbackAlias: true))
             .ToList();
