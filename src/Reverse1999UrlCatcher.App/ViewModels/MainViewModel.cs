@@ -675,9 +675,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
         return new AdbService(AdbPath);
     }
 
-    private MuMuDiscoveryService CreateDiscoveryService()
+    private EmulatorDiscoveryService CreateDiscoveryService()
     {
-        return new MuMuDiscoveryService(CreateAdbService());
+        return new EmulatorDiscoveryService(CreateAdbService());
     }
 
     private DeviceTarget RequireDevice()

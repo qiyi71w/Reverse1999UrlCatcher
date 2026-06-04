@@ -42,7 +42,7 @@ internal static class Program
         return command switch
         {
             "probe-env" => ProbeEnv(locator),
-            "discover-mumu" => await DiscoverMuMuAsync(locator, options),
+            "discover-emulator" => await DiscoverEmulatorAsync(locator, options),
             "gen-ca" => await GenerateCertificateAsync(locator, certificateService, options),
             "push-ca" => await PushCertificateAsync(locator, certificateService, options),
             "proxy-on" => await ProxyOnAsync(locator, store, options),
@@ -69,10 +69,10 @@ internal static class Program
         return adb.IsAvailable && mitmdump.IsAvailable && ips.Count > 0 ? 0 : 1;
     }
 
-    private static async Task<int> DiscoverMuMuAsync(ToolLocator locator, Dictionary<string, string> options)
+    private static async Task<int> DiscoverEmulatorAsync(ToolLocator locator, Dictionary<string, string> options)
     {
         var adb = RequireTool(locator.FindAdb(options.GetValueOrDefault("adb")));
-        var service = new MuMuDiscoveryService(new AdbService(adb));
+        var service = new EmulatorDiscoveryService(new AdbService(adb));
 
         IReadOnlyList<DeviceTarget> devices;
         if (TryReadInt(options, "port", out var port))
@@ -91,7 +91,7 @@ internal static class Program
 
         if (devices.Count == 0)
         {
-            Console.Error.WriteLine("未发现已启动的 MuMu 设备，请先启动 MuMu 或手动指定 --port。");
+            Console.Error.WriteLine("未发现已启动的模拟器设备，请先启动模拟器或手动指定 --port。");
         }
 
         return devices.Count > 0 ? 0 : 1;
@@ -292,7 +292,7 @@ internal static class Program
 
         Commands:
           probe-env
-          discover-mumu [--port <adbPort>]
+          discover-emulator [--port <adbPort>]
           gen-ca [--port <proxyPort>] [--confdir <path>]
           push-ca --serial <serial> [--confdir <path>]
           proxy-on --serial <serial> --host <ip> [--port <proxyPort>]

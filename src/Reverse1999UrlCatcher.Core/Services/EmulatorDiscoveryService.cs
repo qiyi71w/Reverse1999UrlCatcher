@@ -4,7 +4,7 @@ using System.Net.NetworkInformation;
 
 namespace Reverse1999UrlCatcher.Core.Services;
 
-public sealed class MuMuDiscoveryService(AdbService adbService)
+public sealed class EmulatorDiscoveryService(AdbService adbService)
 {
     public async Task<IReadOnlyList<DeviceTarget>> DiscoverWithAutoConnectAsync(CancellationToken cancellationToken = default)
     {
