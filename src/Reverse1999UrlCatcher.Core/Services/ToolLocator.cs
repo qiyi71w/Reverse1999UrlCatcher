@@ -4,11 +4,13 @@ namespace Reverse1999UrlCatcher.Core.Services;
 
 public sealed class ToolLocator
 {
-    private static readonly string[] MuMuAdbCandidates =
+    private static readonly string[] EmulatorAdbCandidates =
     [
         @"C:\Program Files (x86)\Nemu\vmonitor\bin\adb_server.exe",
         @"C:\Program Files\Netease\MuMuPlayer-12.0\shell\adb.exe",
         @"C:\Program Files\Netease\MuMu Player 12\shell\adb.exe",
+        @"D:\leidian\LDPlayer14\adb.exe",
+        @"C:\leidian\LDPlayer14\adb.exe",
         @"C:\Users\admin\AppData\Local\Microsoft\WinGet\Packages\Google.PlatformTools_Microsoft.Winget.Source_8wekyb3d8bbwe\platform-tools\adb.exe",
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk", "platform-tools", "adb.exe"),
     ];
@@ -21,7 +23,7 @@ public sealed class ToolLocator
 
     public ToolStatus FindAdb(string? explicitPath = null)
     {
-        return FindTool("adb", "adb.exe", explicitPath, MuMuAdbCandidates, Path.Combine(AppContext.BaseDirectory, "tools", "adb", "adb.exe"));
+        return FindTool("adb", "adb.exe", explicitPath, EmulatorAdbCandidates, Path.Combine(AppContext.BaseDirectory, "tools", "adb", "adb.exe"));
     }
 
     public ToolStatus FindMitmdump(string? explicitPath = null)

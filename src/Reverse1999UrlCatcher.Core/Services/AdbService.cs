@@ -3,9 +3,9 @@ using Reverse1999UrlCatcher.Core.Parsing;
 
 namespace Reverse1999UrlCatcher.Core.Services;
 
-public sealed class AdbService(string adbPath, ProcessRunner? runner = null)
+public sealed class AdbService(string adbPath, IProcessRunner? runner = null)
 {
-    private readonly ProcessRunner _runner = runner ?? new ProcessRunner();
+    private readonly IProcessRunner _runner = runner ?? new ProcessRunner();
 
     public async Task<IReadOnlyList<DeviceTarget>> GetDevicesAsync(CancellationToken cancellationToken = default)
     {
@@ -20,7 +20,12 @@ public sealed class AdbService(string adbPath, ProcessRunner? runner = null)
 
     public async Task ConnectAsync(int port, CancellationToken cancellationToken = default)
     {
-        var result = await _runner.RunAsync(adbPath, ["connect", $"127.0.0.1:{port}"], TimeSpan.FromSeconds(10), cancellationToken);
+        await ConnectAsync("127.0.0.1", port, cancellationToken);
+    }
+
+    public async Task ConnectAsync(string host, int port, CancellationToken cancellationToken = default)
+    {
+        var result = await _runner.RunAsync(adbPath, ["connect", $"{host}:{port}"], TimeSpan.FromSeconds(10), cancellationToken);
         if (!result.IsSuccess || result.StandardOutput.Contains("failed", StringComparison.OrdinalIgnoreCase))
         {
             throw new InvalidOperationException(result.StandardError.Length > 0 ? result.StandardError : result.StandardOutput);

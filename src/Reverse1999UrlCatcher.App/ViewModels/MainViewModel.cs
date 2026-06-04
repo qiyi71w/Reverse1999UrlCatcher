@@ -295,7 +295,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             var savedSerial = _loadedSettings.LastSerial;
             SelectedDevice ??= Devices.FirstOrDefault(device => string.Equals(device.Serial, savedSerial, StringComparison.OrdinalIgnoreCase))
                                ?? Devices.FirstOrDefault();
-            Status = devices.Count > 0 ? $"已发现 MuMu 设备：{SelectedDevice?.Serial}" : "未发现 MuMu 设备";
+            Status = devices.Count > 0 ? $"已发现模拟器设备：{SelectedDevice?.Serial}" : "未发现模拟器设备";
         });
     }
 
@@ -335,8 +335,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             var device = RequireDevice();
             await PushCertificateCoreAsync(device.Serial);
-            Status = "已推送证书到 MuMu 下载目录";
-            AddLog($"请在 MuMu 中安装 Downloads/{Path.GetFileName(RemoteCertificatePath)}。");
+            Status = "已推送证书到模拟器下载目录";
+            AddLog($"请在模拟器中安装 Downloads/{Path.GetFileName(RemoteCertificatePath)}。");
         });
     }
 
@@ -347,15 +347,15 @@ public sealed class MainViewModel : INotifyPropertyChanged
             var device = RequireDevice();
             Status = "半自动安装：正在生成 CA 证书...";
             var cert = await GenerateCertificateCoreAsync();
-            Status = "半自动安装：正在推送证书到 MuMu...";
+            Status = "半自动安装：正在推送证书到模拟器...";
             await PushCertificateCoreAsync(device.Serial);
             AddLog($"已推送证书：{RemoteCertificatePath}");
             Status = "半自动安装：正在打开安卓安装页面...";
             var opened = await OpenCertificateInstallSettingsAsync(device.Serial);
             AddLog($"证书路径：{cert}");
-            AddLog("请在 MuMu 内按路径安装：设置-网络和互联网-互联网-网络偏好设置-安装证书。");
+            AddLog("请在模拟器内按路径安装：设置-网络和互联网-互联网-网络偏好设置-安装证书。");
             Status = opened
-                ? "已打开安装页，请在 MuMu 完成证书安装后点击“我已安装，检测解密”"
+                ? "已打开安装页，请在模拟器完成证书安装后点击“我已安装，检测解密”"
                 : "已推送证书，但未能直达安装页，请手动进入“设置-网络和互联网-互联网-网络偏好设置-安装证书”后点击“我已安装，检测解密”";
         });
     }
@@ -525,7 +525,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
                     ? $"已生效 ({expectedProxy})"
                     : $"读回不一致 (当前: {proxyCurrent ?? "null"})";
                 proxySet = true;
-                AddLog($"已设置 MuMu 代理：{host}:{ProxyPort}");
+                AddLog($"已设置模拟器代理：{host}:{ProxyPort}");
 
                 Status = "mitmproxy 已启动，等待你在游戏中打开抽卡历史页";
                 TrafficStatus = "代理进程已启动，等待连接";
@@ -579,7 +579,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             TrafficStatus = "未检测到连接";
         }
-        Status = HasPendingRestore ? "已停止，但恢复代理失败，请点击“修复 MuMu 无法上网”重试" : "已停止并恢复代理";
+        Status = HasPendingRestore ? "已停止，但恢复代理失败，请点击“修复模拟器代理”重试" : "已停止并恢复代理";
     }
 
     private Task CopyUrlAsync()
@@ -612,7 +612,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 TrafficStatus = "未检测到连接";
             }
 
-            Status = wasCapturing ? "已停止抓取并修复 MuMu 代理配置" : "已修复 MuMu 代理配置";
+            Status = wasCapturing ? "已停止抓取并修复模拟器代理配置" : "已修复模拟器代理配置";
             AddLog(wasCapturing
                 ? $"已停止抓取并执行网络修复：{device.Serial}"
                 : $"已执行网络修复：{device.Serial}");
@@ -633,7 +633,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             await new ProxySettingsService(CreateAdbService()).RestoreProxyAsync(serial, pending?.OldProxy);
             _stateStore.ClearPendingProxyRestore();
             HasPendingRestore = false;
-            AddLog("已恢复 MuMu 原代理");
+            AddLog("已恢复模拟器原代理");
         }
         catch (Exception ex)
         {
@@ -675,14 +675,14 @@ public sealed class MainViewModel : INotifyPropertyChanged
         return new AdbService(AdbPath);
     }
 
-    private MuMuDiscoveryService CreateDiscoveryService()
+    private EmulatorDiscoveryService CreateDiscoveryService()
     {
-        return new MuMuDiscoveryService(CreateAdbService());
+        return new EmulatorDiscoveryService(CreateAdbService());
     }
 
     private DeviceTarget RequireDevice()
     {
-        return SelectedDevice ?? throw new InvalidOperationException("请先选择 MuMu 设备。");
+        return SelectedDevice ?? throw new InvalidOperationException("请先选择模拟器设备。");
     }
 
     private bool HasAdb() => !string.IsNullOrWhiteSpace(AdbPath);

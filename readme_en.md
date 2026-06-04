@@ -2,7 +2,7 @@
 
 # Reverse1999UrlCatcher
 
-Windows desktop utility for capturing Reverse: 1999 summon-history URL (MuMu + ADB + mitmproxy).
+Windows desktop utility for capturing Reverse: 1999 summon-history URL (ADB emulator + mitmproxy).
 
 <a href="readme.md">简体中文</a> ｜ <a href="readme_en.md">English</a>
 
@@ -15,14 +15,14 @@ Windows desktop utility for capturing Reverse: 1999 summon-history URL (MuMu + A
 
 ## Overview
 
-Reverse1999UrlCatcher helps with the full flow on **Windows + MuMu emulator**:
+Reverse1999UrlCatcher helps with the full flow on **Windows + ADB-based Android emulator**:
 
 - Detect `adb` / `mitmdump`
-- Discover and connect MuMu ADB devices
+- Discover and connect emulator ADB devices
 - Generate and push mitmproxy CA certificate
 - Start proxy capture and match summon-history URL
 - Copy captured URL
-- Restore proxy on stop, or repair MuMu network settings
+- Restore proxy on stop, or repair emulator proxy settings
 
 Repository layout:
 
@@ -42,7 +42,7 @@ Repository layout:
 
 - Windows 10/11 x64
 - .NET 10 SDK (for source build/run)
-- MuMu emulator (running instance)
+- ADB-based Android emulator (running instance; known supported examples: MuMu, LDPlayer 14)
 - `adb.exe` (path can be set in the app)
 - `mitmdump.exe` (path can be set in the app)
 
@@ -53,18 +53,17 @@ Repository layout:
 1. Launch `Reverse1999UrlCatcher.App`.
 2. Fill or confirm `adb` and `mitmdump` paths.
 3. Click **Detect Environment**.
-4. Click **Auto Discover MuMu** or connect by ADB port.
-5. In certificate section, click **Semi-auto Install CA**.
-6. Complete certificate installation in MuMu:  
+4. Click **Auto Discover Emulator** or connect by ADB port.
+5. If certificate installation is needed, click **Semi-auto Install CA** in the certificate section and complete certificate installation in the emulator:
    `Settings -> Network & internet -> Internet -> Network preferences -> Install certificates`
-7. Select host IP and click **Start Capture**.
-8. Open summon history page in game and copy captured URL.
+6. Select host IP and click **Start Capture**.
+7. Open summon history page in game and copy captured URL.
 
 ## CLI Commands
 
 ```bash
 probe-env
-discover-mumu [--port <adbPort>]
+discover-emulator [--port <adbPort>]
 gen-ca [--port <proxyPort>] [--confdir <path>]
 push-ca --serial <serial> [--confdir <path>]
 proxy-on --serial <serial> --host <ip> [--port <proxyPort>]
@@ -86,5 +85,7 @@ Output is generated in `dist/`.
 ## Notes
 
 - Capture success depends on game version, network conditions, and certificate trust state.
+- Some environments may capture without installing a CA; certificate installation and checks remain available for environments that need HTTPS decryption confirmation.
 - Logs may include non-target domains (crash reporting, H5 pages, support services). This is normal background traffic.
-- If MuMu loses network connectivity after capture, use the **Repair MuMu Network** action in app.
+- When multiple emulators are running and ADB ports collide, auto discovery tries local loopback aliases to separate same-port instances. If the target instance still cannot be found, close other emulators first, then run auto discovery again or connect by ADB port manually.
+- If the emulator loses network connectivity after capture, use the **Repair Emulator Proxy** action in app.
