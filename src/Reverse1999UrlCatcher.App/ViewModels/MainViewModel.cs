@@ -53,6 +53,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public ObservableCollection<HostIpAddress> HostIps { get; } = [];
     public ObservableCollection<string> Logs { get; } = [];
 
+    public string AppVersion { get; } = $"v{typeof(MainViewModel).Assembly.GetName().Version?.ToString(3) ?? "0.0.0"}";
+
     public MainViewModel()
     {
         ProbeEnvironmentCommand = new AsyncRelayCommand(ProbeEnvironmentByUserAsync);
