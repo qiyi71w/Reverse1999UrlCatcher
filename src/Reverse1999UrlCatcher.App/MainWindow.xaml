@@ -407,17 +407,24 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0"
-                           Text="Reverse1999UrlCatcher"
-                           FontSize="22"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center" />
-                <TextBlock Grid.Column="0"
-                           Margin="320,4,0,0"
-                           Text="仅供学习交流使用"
-                           FontSize="12"
-                           Foreground="{DynamicResource SecondaryTextBrush}"
-                           VerticalAlignment="Center" />
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="Reverse1999UrlCatcher"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center" />
+                    <TextBlock Margin="10,4,0,0"
+                               Text="{Binding AppVersion, StringFormat=v{0}}"
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               VerticalAlignment="Center" />
+                    <TextBlock Margin="12,4,0,0"
+                               Text="仅供学习交流使用"
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
 
                 <Border Grid.Column="1"
                         HorizontalAlignment="Center"
