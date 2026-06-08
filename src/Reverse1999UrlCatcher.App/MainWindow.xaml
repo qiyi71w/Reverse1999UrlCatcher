@@ -415,7 +415,7 @@
                                FontWeight="SemiBold"
                                VerticalAlignment="Center" />
                     <TextBlock Margin="10,4,0,0"
-                               Text="{Binding AppVersion}"
+                               Text="{Binding AppVersion, StringFormat=v{0}}"
                                FontSize="12"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                VerticalAlignment="Center" />

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -53,7 +54,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public ObservableCollection<HostIpAddress> HostIps { get; } = [];
     public ObservableCollection<string> Logs { get; } = [];
 
-    public string AppVersion { get; } = $"v{typeof(MainViewModel).Assembly.GetName().Version?.ToString(3) ?? "0.0.0"}";
+    public string AppVersion { get; } =
+        typeof(MainViewModel).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+        ?? typeof(MainViewModel).Assembly.GetName().Version?.ToString(3)
+        ?? "0.0.0";
 
     public MainViewModel()
     {
